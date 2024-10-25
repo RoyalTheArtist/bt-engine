@@ -1,8 +1,11 @@
-import { Component, Entity, System } from "@/engine/ecs";
+import { Component, Entity, System } from "../ecs";
+import { SurfaceLayer } from "../render";
+import { Vector2D } from "../utils";
+
 import { AnimationManager } from "./animations";
 import { Sprite } from "./graphics.spriteSheet";
-import { Vector2D } from "../utils";
-import { SurfaceLayer } from "@/render";
+
+
 
 export class GraphicObject {
     constructor(public sprite: Sprite, public position: Vector2D, public layer: "foreground" | "background") { }

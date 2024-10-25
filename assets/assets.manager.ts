@@ -1,5 +1,5 @@
 
-import { ISpriteSheetData, SpriteSheet } from "@/engine/graphics";
+import { ISpriteSheetData, SpriteSheet } from "../graphics";
 
 async function fetchJson<T>(resource: string): Promise<T> { 
     try {

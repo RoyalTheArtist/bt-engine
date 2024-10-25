@@ -1,5 +1,5 @@
 import { Entity } from "./entity";
-import { IInitialize, IUpdate } from "bt-engine";
+import { IInitialize, IUpdate } from "../update.h";
 export abstract class Component implements IUpdate, IInitialize {
     parent: Entity | null
 
