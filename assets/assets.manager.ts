@@ -17,7 +17,7 @@ type SpriteSheetManifest = Record<string, ISpriteSheetData>
 
 export class AssetManager {
     private static spritesheets: Map<string, SpriteSheet> = new Map()
-    public static _baseUrl = 'src/'
+    public static _baseUrl = '/'
 
     public static get baseUrl() {
         return this._baseUrl
