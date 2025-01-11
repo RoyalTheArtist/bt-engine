@@ -29,26 +29,19 @@ export class MouseHandler {
         elem.addEventListener('mousedown', (e) => {
             this._onMouseDown(e)
         })
-        elem.addEventListener('mouseup', (e) => {
-            this._onMouseUp(e)
+        elem.addEventListener('mouseup', () => {
+            this._onMouseUp()
         })
-        elem.addEventListener('mouseleave', (e) => {
-            this._onMouseLeave(e)
+        elem.addEventListener('mouseleave', () => {
+            this._onMouseLeave()
         })
-        elem.addEventListener('mouseenter', (e) => {
-            this._onMouseEnter(e)
+        elem.addEventListener('mouseenter', () => {
+            this._onMouseEnter()
         })
     }
 
     public get mousePos(): Position {
         return this._mousePos
-    }
-
-    public get lockedPos(): Position {
-        return {
-            x: Math.floor((this.mousePos.x + 3) / 20),
-            y: Math.floor((this.mousePos.y + 3) / 20)
-        } 
     }
 
     public get available(): boolean {
@@ -108,16 +101,16 @@ export class MouseHandler {
         
     }
 
-    private _onMouseUp(e: MouseEvent) {
+    private _onMouseUp() {
         this._mouseDown = false
     }
 
-    private _onMouseLeave(e: MouseEvent) {
+    private _onMouseLeave() {
         this._mouseDown = false
         this._mouseAvailable = false
     }
 
-    private _onMouseEnter(e: MouseEvent) {
+    private _onMouseEnter() {
         this._mouseAvailable = true
     }
 } 
