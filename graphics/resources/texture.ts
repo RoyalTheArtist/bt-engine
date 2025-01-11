@@ -26,7 +26,7 @@ export class Texture {
         return this._loaded
     }
     async load() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this._image.onload = () => {
                 this._loaded = true
                 resolve(this._image)

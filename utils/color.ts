@@ -80,12 +80,12 @@ export class Color {
     }
 }
  
-function hslToRgb(h: number, s: number, l: number) {
-    const r = l
-    const g = l
-    const b = l 
-    return [r, g, b]
-}
+// function hslToRgb(h: number, s: number, l: number) {
+//     const r = l
+//     const g = l
+//     const b = l 
+//     return [r, g, b]
+// }
 
 const RGB_ATLAS = new Map<string | number, Color>([
     ["red", new Color(255, 0, 0)],

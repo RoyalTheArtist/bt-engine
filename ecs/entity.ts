@@ -2,7 +2,7 @@ import { Component } from "./component.h"
 import { IInitialize, IUpdate } from ".."
 import { Vector2D } from "../utils"
 
-type constr<T extends Component> = { new(...args: any[]): Component } 
+type constr<T extends Component> = { new(...args: any[]): T } 
 
 export class Rectangle {
     constructor(public start: Vector2D, public end: Vector2D) { }

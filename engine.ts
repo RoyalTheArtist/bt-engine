@@ -1,4 +1,4 @@
-import { Viewport } from "../render";
+import { Viewport } from "./render";
 import { BaseScreen } from "./screen.base";
 import { IStart, IUpdate } from "./update.h";
 
