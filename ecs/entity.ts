@@ -23,7 +23,7 @@ export abstract class Entity implements IUpdate, IInitialize {
         this.components.add(component)
     }
 
-    public hasComponent<C extends Component>(c: constr<C>): boolean {
+    public hasComponent(c: Function): boolean {
         for (const component of this._components) {
             if (component instanceof c) {
                 return true
@@ -32,7 +32,7 @@ export abstract class Entity implements IUpdate, IInitialize {
         return false
     }
 
-    public hasAll<C extends Component>(componentClasses: Iterable<constr<C>>): boolean {
+    public hasAll(componentClasses: Iterable<Function>): boolean {
         for (let componentClass of componentClasses) {
             if (!this.hasComponent(componentClass)) {
                 return false
