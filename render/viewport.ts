@@ -22,8 +22,8 @@ export class Viewport implements IInitialize {
     public draw() {
       
       this.drawBackground()
-      this.surface.draw(SurfaceLayer.background.surface.canvas, new Vector2D(0, 0))
-      this.surface.draw(SurfaceLayer.foreground.surface.canvas, new Vector2D(0, 0))
+      this.surface.drawZoom(SurfaceLayer.background.surface.canvas, new Vector2D(0, 0), SurfaceLayer.zoom)
+      this.surface.drawZoom(SurfaceLayer.foreground.surface.canvas, new Vector2D(0, 0), SurfaceLayer.zoom)
     }
   
     public clear() {

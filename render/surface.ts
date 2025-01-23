@@ -34,6 +34,7 @@ export class Surface implements IInitialize {
   public initialize(): Surface {
     this.canvas.width = this.resolution.x
     this.canvas.height = this.resolution.y
+    this.context.imageSmoothingEnabled = false
     return this
   }
   
@@ -107,7 +108,7 @@ class GraphicsLayer {
     this.surface.clear()
     this.objects.forEach((object) => {
        if (!object.sprite || !object.sprite.img) return
-       this.surface.draw(object.sprite.img, object.position)
+      this.surface.draw(object.sprite.img, object.position)
     })
   }
 
@@ -119,8 +120,17 @@ class GraphicsLayer {
 export class SurfaceLayer {
   private static _background: GraphicsLayer
   private static _foreground: GraphicsLayer
+  private static _zoom: number = 1
+
+  public static get zoom(): number {
+    return this._zoom
+  }
 
   private constructor() { }
+
+  public static setZoom(zoom: number) {
+    this._zoom = zoom
+  }
 
   public static get background(): GraphicsLayer {
     if (!this._background) {
