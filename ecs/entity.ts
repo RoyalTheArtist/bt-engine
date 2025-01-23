@@ -11,6 +11,7 @@ export class Rectangle {
 
 export abstract class Entity implements IUpdate, IInitialize { 
     protected _components: Set<Component> = new Set()
+    public name: string = 'unnamed entity'
 
     public get components() {
         return this._components

@@ -15,8 +15,15 @@ export class Viewport implements IInitialize {
       return this._surface
     }
   
-    public initialize() {
+  public initialize(elem: string = "app") {
+    const el = document.getElementById(elem)
+    if (el) {
+      el.innerHTML = ""
+      el.appendChild(this._surface.canvas)
+    } else {
       document.body.appendChild(this._surface.canvas)
+    }
+      
     }
   
     public draw() {
