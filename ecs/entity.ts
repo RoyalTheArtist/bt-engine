@@ -46,7 +46,7 @@ export abstract class Entity implements IUpdate, IInitialize {
                 return component as T
             }
         }
-        throw new Error('Component not found')
+        throw new Error(`Component not found: ${c.name} `)
     }
 
     public removeComponent<C extends Component>(c: constr<C>) {
