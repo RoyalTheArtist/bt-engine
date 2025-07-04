@@ -3,7 +3,7 @@ export type Position = {
     y: number
 }
 
-type MouseState = {
+export type MouseState = {
     mousePos: Position
     leftMouse: boolean
     rightMouse: boolean
@@ -114,3 +114,12 @@ export class MouseHandler {
         this._mouseAvailable = true
     }
 } 
+
+let mouseHandler: MouseHandler
+
+export const useMouseHandler = () => {
+    if (!mouseHandler) {
+        mouseHandler = new MouseHandler()
+    }
+    return mouseHandler
+}

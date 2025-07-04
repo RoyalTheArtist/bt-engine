@@ -1,17 +1,17 @@
-import { Surface, SurfaceLayer } from "./surface"
-
+import { makeSurface, SurfaceOld, SurfaceLayer } from "./surfaceOld"
 import { IInitialize } from ".."
 import { Color, Vector2D } from "../utils"
-
+import { SurfaceLayers } from "./surfaceLayers"
+import { Surface } from "./surface"
 
 export class Viewport implements IInitialize {
-    private _surface: Surface
+    private _surface: SurfaceOld
 
-    constructor(surface: Surface) {
+    constructor(surface: SurfaceOld) {
       this._surface = surface
     }
 
-    public get surface(): Surface {
+    public get surface(): SurfaceOld {
       return this._surface
     }
   
@@ -27,13 +27,13 @@ export class Viewport implements IInitialize {
     }
   
     public draw() {
-      
       this.drawBackground()
       this.surface.drawZoom(SurfaceLayer.background.surface.canvas, new Vector2D(0, 0), SurfaceLayer.zoom)
       this.surface.drawZoom(SurfaceLayer.foreground.surface.canvas, new Vector2D(0, 0), SurfaceLayer.zoom)
     }
   
-    public clear() {
+  public clear() {
+      this.surface.clear()
       SurfaceLayer.background.clear()
       SurfaceLayer.foreground.clear()
     }
@@ -54,3 +54,61 @@ export class Viewport implements IInitialize {
       this.surface.drawRect(new Vector2D(0, 0), new Vector2D(this.surface.width, this.surface.height), color)
     }
   }
+
+  export function makeViewport(width: number, height: number): Viewport {
+    const surface = makeSurface(width, height)
+    return new Viewport(surface)
+}
+  
+
+function provideElem(attachTo: string | HTMLElement) {
+  if (typeof attachTo === "string") {
+    const elem = document.getElementById(attachTo)
+    if (elem !== null) return elem
+    return document.body
+  }
+  return attachTo
+}
+
+export class ViewportSimple {
+  private surface: Surface | null = null
+  resolution: Vector2D
+
+  constructor(resolution: Vector2D, private _layers: SurfaceLayers) {
+    this.resolution = resolution
+  }
+
+  public get layers(): SurfaceLayers {
+    return this._layers
+  }
+
+  public initialize() {
+    const surface = Surface.makeSurface(this.resolution.x, this.resolution.y)
+    this.surface = surface
+    
+  }
+
+  public attachTo(elem: string | HTMLElement) {
+    const surface = Surface.makeSurface(this.resolution.x, this.resolution.y)
+    this.surface = surface
+    const el = provideElem(elem)
+    el.appendChild(surface.canvas)
+  }
+
+  public drawBackground(color: Color = new Color(0, 0, 0)) {
+    if (!this.surface) return
+    this.surface.clear()
+    this.surface.drawRect(new Vector2D(0, 0), new Vector2D(this.surface.width, this.surface.height), color)
+  }
+
+  public render() {
+    if (!this.surface) return
+    this.drawBackground()
+
+    this._layers.render(this.surface)
+  }
+    
+  public getSurface() {
+    return this.surface
+  }
+}

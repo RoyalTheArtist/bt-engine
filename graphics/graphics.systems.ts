@@ -29,6 +29,7 @@ export class RenderSystem extends System {
     }
 
     public query(entities: Set<Entity>) {
+        this.entities = new Set()
         for (let entity of entities) {
             if (entity.hasAll(this.componentsRequired)) {
                 this.entities.add(entity)
