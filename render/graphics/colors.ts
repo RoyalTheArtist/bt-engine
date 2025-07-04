@@ -1,4 +1,4 @@
-import { Color } from '../utils/color';
+import { Color } from '../../utils/color';
 
 export const Colors = Object.freeze({
     black: new Color(0, 0, 0, 1.0),

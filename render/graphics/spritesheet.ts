@@ -33,8 +33,7 @@ export class SpriteSheet implements BaseSpriteSheet {
 
     static loadFrom(resource: string): SpriteSheet {
         if (loadedSpritesheets.has(resource)) return loadedSpritesheets.get(resource) as SpriteSheet
-        const texture = new Texture(resource)
-        texture.load()
+        const texture = Texture.from(resource)
         const spritesheet = new SpriteSheet(texture)
         loadedSpritesheets.set(resource, spritesheet)
         return spritesheet

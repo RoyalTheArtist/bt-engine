@@ -1,12 +1,13 @@
-import { AssetManager } from "../../assets"
 
+
+const loadedTextures = new Map<string, Texture>()
 
 export class Texture {
     private _url: string
     private _image: HTMLImageElement
     private _loaded: boolean = false
     constructor(url: string) {
-        const BASE_URL = AssetManager.baseUrl
+        const BASE_URL = '/'
         this._url = url
         this._image = new Image()
         this._image.src = BASE_URL + this._url
@@ -40,5 +41,13 @@ export class Texture {
                 resolve(this._loaded)
             }
         })
+    }
+
+    static from(src: string) {
+        if (loadedTextures.has(src)) return loadedTextures.get(src) as Texture
+        const texture = new Texture(src)
+        texture.load()
+        loadedTextures.set(src, texture)
+        return texture
     }
 }

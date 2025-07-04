@@ -16,6 +16,8 @@ export class GraphicsObject implements IRenderable {
     get position() { return this._position }
     get dimensions() { return this._dimensions }
     get center() { return new Vector2D(this.position.x + this.dimensions.x / 2, this.position.y + this.dimensions.y / 2) }
+    
+    set position(position: Vector2D) { this._position = position }
     build() {
         if (!this.surface) this.surface = Surface.makeSurface(this.dimensions.x, this.dimensions.y)
     }
