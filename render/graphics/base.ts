@@ -32,4 +32,6 @@ export class GraphicsObject implements IRenderable {
     setSprite(sprite: Sprite) {
         this.sprite = sprite
     }
+
+    getSprite() { return this.sprite }
 }
