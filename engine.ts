@@ -4,6 +4,7 @@ import { IStart, IUpdate } from "./update.h";
 
 import { KeyboardManager } from "./input";
 import { type RenderSystem } from "./render/system";
+import { AnimationManager } from "./render/graphics/animations";
 
 
 export class Engine implements IUpdate, IStart {
@@ -54,6 +55,7 @@ export class Engine implements IUpdate, IStart {
             this.pendingScreen = null
         }
 
+        AnimationManager.update(delta)
         this.render.render()
 
         window.requestAnimationFrame((timeStamp) => {
