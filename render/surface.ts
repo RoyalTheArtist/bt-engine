@@ -1,4 +1,4 @@
-import { Color, type Vector2D } from "@engine/utils"
+import { Color, type Vector2D } from "../utils"
 
 export interface IRenderable {
   render(surface: Surface): void

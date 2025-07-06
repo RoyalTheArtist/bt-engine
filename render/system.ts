@@ -1,4 +1,4 @@
-import { Vector2D } from "@engine/utils"
+import { Vector2D } from "../utils"
 import { ViewportSimple as Viewport } from "./viewport"
 import { SurfaceLayers } from "./surfaceLayers"
 import { IRenderable } from "./surface"
