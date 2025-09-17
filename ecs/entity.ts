@@ -4,12 +4,18 @@ import { Vector2D } from "../utils"
 
 type constr<T extends Component> = { new(...args: any[]): T } 
 
+
 export class Rectangle {
     constructor(public start: Vector2D, public end: Vector2D) { }
 }
 
-
-export abstract class Entity implements IUpdate, IInitialize { 
+/**
+ * Abstract class for all entities.
+ * Entities are objects that can be added to the engine and that are updated every frame.
+ * Entities can have components attached to them, which define certain behaviors or properties of the entity.
+ * Entities can be initialized and updated.
+ */
+export abstract class Entity implements IUpdate, IInitialize {
     protected _components: Set<Component> = new Set()
     public name: string = 'unnamed entity'
 
