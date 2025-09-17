@@ -6,6 +6,7 @@ export class Color {
     public readonly B: number = 0
     private A: number = 1
 
+
     public static isValidChannel(v: number, isAlpha: boolean = false): boolean {
         const max = isAlpha ? 1 : 255
         if (v < 0 || v > max) {
@@ -49,6 +50,19 @@ export class Color {
         }
 
         return new Color(r, g, b, a)
+    }
+
+    public static addToAtlas(name: string, r: number, g: number, b: number, a: number = 1) {
+        if (RGB_ATLAS.has(name)) return
+        [...RGB_ATLAS.values()].find(k => {
+            if (k.matches(r, g, b, a)) {
+                RGB_ATLAS.set(name, k)
+            }
+        })
+    }
+
+    public matches(r: number, g: number, b: number, a: number = 1) {
+        return this.R === r && this.G === g && this.B === b && this.A === a
     }
     
     constructor(
@@ -95,12 +109,13 @@ export class Color {
 //     return [r, g, b]
 // }
 
-export const RGB_ATLAS = new Map<string | number, Color>([
-    ["red", new Color(255, 0, 0)],
-    ["green", new Color(0, 255, 0)],
-    ["blue", new Color(0, 0, 255)],
+export const RGB_ATLAS = new Map<string, Color>([
     ["black", new Color(0, 0, 0)],
     ["white", new Color(255, 255, 255)],
-    ['yellow', new Color(255, 255, 0)],
-    ['magenta', new Color(255, 0, 255)]
+    ["red", new Color(255, 0, 0)],
+    ["green", new Color(0, 255, 0)],
+    ["blue", new Color(0, 0, 255)],   
+    ['cyan', new Color(0, 255, 255)],
+    ['magenta', new Color(255, 0, 255)],
+    ['yellow', new Color(255, 255, 0)]
 ]) 
