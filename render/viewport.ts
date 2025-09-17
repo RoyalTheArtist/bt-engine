@@ -55,9 +55,11 @@ export class Viewport implements IInitialize {
     }
   }
 
-  export function makeViewport(width: number, height: number): Viewport {
-    const surface = makeSurface(width, height)
-    return new Viewport(surface)
+  export function makeViewport(width: number, height: number): ViewportSimple {
+    const resolution = new Vector2D(width, height)
+    const viewport = new ViewportSimple(resolution, new SurfaceLayers(resolution))
+    viewport.initialize()
+    return viewport
 }
   
 

@@ -4,7 +4,7 @@ export class Color {
     public readonly R: number = 0
     public readonly G: number = 0
     public readonly B: number = 0
-    public readonly A: number = 1
+    private A: number = 1
 
     public static isValidChannel(v: number, isAlpha: boolean = false): boolean {
         const max = isAlpha ? 1 : 255
@@ -72,11 +72,15 @@ export class Color {
     }
 
     public asString(): string {
-        return `rgb(${this.R},${this.G},${this.B})`
+        return `rgb(${this.R},${this.G},${this.B},${this.A})`
     }
 
     public asHexString(): string {
         return `#${this.R.toString(16)}${this.G.toString(16)}${this.B.toString(16)}`
+    }
+
+    public setAlpha(a: number) {
+        this.A = a
     }
 }
  
