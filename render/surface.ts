@@ -66,12 +66,53 @@ export class Surface {
     return this
   }
 
+  public drawLine(start: Vector2D, end: Vector2D, color: Color = new Color(0, 0, 0)) {
+    this.ctx.beginPath()
+    this.ctx.lineWidth = 1
+    this.ctx.moveTo(start.x, start.y)
+    this.ctx.lineTo(end.x, end.y)
+    this.ctx.strokeStyle = color.asString()
+    this.ctx.stroke()
+    return this
+  }
+
   public drawText(text: string, position: Vector2D, color: Color, size: number = 16) {
     this.context.fillStyle = color.asString()
     this.context.textBaseline = "top"
     this.context.textAlign = "left"
     this.context.font = `${size}px sans-serif`
     this.context.fillText(text, position.x, position.y) 
+  }
+
+  public drawRotatedImage(center: Vector2D, image: HTMLImageElement | HTMLCanvasElement, angle: number) {
+    this.ctx.save()
+    this.ctx.translate(center.x, center.y)
+    this.ctx.rotate(angle)
+    this.ctx.drawImage(image, -image.width / 2, -image.height / 2)
+    this.ctx.restore()
+  }
+
+  public drawPoint(position: Vector2D, color: Color) {
+    this.ctx.fillStyle = color.asString()
+    this.ctx.fillRect(position.x, position.y, 1, 1)
+  }
+
+  public drawPoints(points: Vector2D[], color: Color, lineWidth: number = 1, alphaIncrement: number = 0.001) {
+    if (points.length < 2) return
+    this.context.lineWidth = lineWidth
+    
+    this.context.beginPath()
+    for (let i = 1; i < points.length; i++) {
+      if (points[i].x > 0)  this.context.lineTo(points[i].x, points[i].y) 
+      
+    }
+
+    const alphaValue = Math.floor(alphaIncrement * 100)
+    if (alphaValue < 10) color.setAlpha(.5)
+    else if (alphaValue >= 100) color.setAlpha(1)
+
+    this.context.strokeStyle = color.asString()
+    this.context.stroke()
   }
 }
 
