@@ -114,3 +114,38 @@ export class ViewportSimple {
     return this.surface
   }
 }
+
+export class CanvasViewport {
+  surface!: Surface
+  container: HTMLElement | null = null
+  constructor(public width: number, public height: number) { }
+  
+  init() {
+    this.surface = Surface.makeSurface(this.width, this.height)
+    return this
+  }
+
+  public static createViewport(width: number, height: number, elem?: string | HTMLElement) {
+    const viewport = new CanvasViewport(width, height)
+    viewport.init()
+    if (elem) viewport.attachTo(elem)
+    return viewport
+  }
+
+  public attachTo(elem: string | HTMLElement) {
+    if (typeof elem === "string") {
+      const container = document.getElementById(elem) 
+      if (container !== null) this.container = container
+      
+    } else if (elem instanceof HTMLElement) {
+      this.container = elem
+    } 
+
+    if (!this.container) {
+      this.container = document.body
+    }
+    
+    this.container.appendChild(this.surface.canvas)
+    return this
+  }
+}

@@ -114,6 +114,11 @@ export class Surface {
     this.context.strokeStyle = color.asString()
     this.context.stroke()
   }
+
+  public attach(elem: HTMLElement) {
+    elem.appendChild(this.canvas)
+    return this
+  }
 }
 
 export class GraphicsLayer {

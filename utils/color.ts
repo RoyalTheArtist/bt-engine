@@ -82,6 +82,10 @@ export class Color {
     public setAlpha(a: number) {
         this.A = a
     }
+
+    public copy(): Color {
+        return new Color(this.R, this.G, this.B, this.A)
+    }
 }
  
 // function hslToRgb(h: number, s: number, l: number) {
@@ -91,11 +95,12 @@ export class Color {
 //     return [r, g, b]
 // }
 
-const RGB_ATLAS = new Map<string | number, Color>([
+export const RGB_ATLAS = new Map<string | number, Color>([
     ["red", new Color(255, 0, 0)],
     ["green", new Color(0, 255, 0)],
     ["blue", new Color(0, 0, 255)],
     ["black", new Color(0, 0, 0)],
     ["white", new Color(255, 255, 255)],
     ['yellow', new Color(255, 255, 0)],
+    ['magenta', new Color(255, 0, 255)]
 ]) 
