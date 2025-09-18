@@ -57,11 +57,17 @@ export class Sprite implements BaseSprite {
     }
 
     render(surface: Surface): void {
-        if (!this.img) {
-            this.build();
-            return
-        }
-        surface.draw(this.img, this.position)
+        surface.context.drawImage(
+        this._texture.image as HTMLImageElement,
+        this.start.x,
+        this.start.y,
+        this.dimensions.x,
+            this.dimensions.y,
+            0,
+            0,
+            this.dimensions.x,
+            this.dimensions.y
+        )
     }
 }
 
