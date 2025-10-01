@@ -7,6 +7,6 @@ export abstract class BaseScreen implements IUpdate, IInitialize {
         this.ready = true
         return Promise.resolve(this)
     }
-    abstract update(delta: number): BaseScreen
-    abstract initialize(engine: Engine): BaseScreen
+    abstract update(delta: number): this
+    abstract initialize(engine: Engine): this
 }
