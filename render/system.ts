@@ -17,15 +17,18 @@ export interface GraphicsConfigData extends RenderConfigData {
 
 export interface RenderSystem {
     type: string
+    readonly viewport: Viewport
     render(): void
     clear(): void
 }
 
 export class GraphicsRenderSystem implements RenderSystem {
     type = "graphics"
-    constructor(private viewport: Viewport) {}
+
+    constructor(private _viewport: Viewport) {}
 
     public get resolution() { return this.viewport.resolution }
+    public get viewport() { return this._viewport }
 
     render() {
         this.viewport.render()

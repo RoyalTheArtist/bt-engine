@@ -12,3 +12,7 @@ export abstract class Component implements IUpdate, IInitialize {
     update(_delta: number): void {}
     initialize(): void {}
 }
+
+export type ComponentClass<T extends Component> = new (...args: any[]) => T;
+
+export class ComponentContainer {}

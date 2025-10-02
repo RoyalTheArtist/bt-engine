@@ -26,7 +26,6 @@ export class SpriteSheet implements BaseSpriteSheet {
             return this.generatedSprites.get(key) as Sprite
         }
         const sprite = new Sprite(this._texture, start, dimensions)
-        sprite.build()
         this.generatedSprites.set(key, sprite)
         return sprite
     }
