@@ -21,6 +21,14 @@ export class Surface {
     return this.ctx
   }
 
+  public changeDimensions(width: number, height: number) {
+    this.width = width
+    this.height = height
+    this._canvas.width = width
+    this._canvas.height = height
+    return this
+  }
+
   public static makeSurface(width: number, height: number) {
     const canvas = document.createElement("canvas")
     return new Surface(canvas, width, height).initialize()

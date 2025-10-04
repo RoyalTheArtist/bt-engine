@@ -57,7 +57,8 @@ export class Viewport implements IInitialize {
 
   export function makeViewport(width: number, height: number): ViewportSimple {
     const resolution = new Vector2D(width, height)
-    const viewport = new ViewportSimple(resolution, new SurfaceLayers(resolution))
+    const surface = Surface.makeSurface(width, height)
+    const viewport = new ViewportSimple(resolution, new SurfaceLayers(resolution), surface)
     viewport.initialize()
     return viewport
 }
@@ -72,64 +73,13 @@ function provideElem(attachTo: string | HTMLElement) {
   return attachTo
 }
 
-export class ViewportSimple {
-  private surface: Surface | null = null
+export abstract class BaseViewport {
+  abstract surface: Surface
   resolution: Vector2D
-
-  constructor(resolution: Vector2D, private _layers: SurfaceLayers) {
-    this.resolution = resolution
-  }
-
-  public get layers(): SurfaceLayers {
-    return this._layers
-  }
-
-  public initialize() {
-    const surface = Surface.makeSurface(this.resolution.x, this.resolution.y)
-    this.surface = surface
-    
-  }
-
-  public attachTo(elem: string | HTMLElement) {
-    const surface = Surface.makeSurface(this.resolution.x, this.resolution.y)
-    this.surface = surface
-    const el = provideElem(elem)
-    el.appendChild(surface.canvas)
-  }
-
-  public drawBackground(color: Color = new Color(0, 0, 0)) {
-    if (!this.surface) return
-    this.surface.clear()
-    this.surface.drawRect(new Vector2D(0, 0), new Vector2D(this.surface.width, this.surface.height), color)
-  }
-
-  public render() {
-    if (!this.surface) return
-    this.drawBackground()
-
-    this._layers.render(this.surface)
-  }
-    
-  public getSurface() {
-    return this.surface
-  }
-}
-
-export class CanvasViewport {
-  surface!: Surface
   container: HTMLElement | null = null
-  constructor(public width: number, public height: number) { }
-  
-  init() {
-    this.surface = Surface.makeSurface(this.width, this.height)
-    return this
-  }
 
-  public static createViewport(width: number, height: number, elem?: string | HTMLElement) {
-    const viewport = new CanvasViewport(width, height)
-    viewport.init()
-    if (elem) viewport.attachTo(elem)
-    return viewport
+  constructor(resolution: Vector2D) {
+      this.resolution = resolution
   }
 
   public attachTo(elem: string | HTMLElement) {
@@ -147,5 +97,95 @@ export class CanvasViewport {
     
     this.container.appendChild(this.surface.canvas)
     return this
+  }
+}
+
+export class ViewportSimple extends BaseViewport {
+  surface: Surface
+  resolution: Vector2D
+
+  constructor(resolution: Vector2D, private _layers: SurfaceLayers, surface: Surface) {
+    super(resolution)
+    this.surface = surface
+    this.resolution = resolution
+  }
+
+  public get layers(): SurfaceLayers {
+    return this._layers
+  }
+
+  public initialize() {
+    const surface = Surface.makeSurface(this.resolution.x, this.resolution.y)
+    this.surface = surface
+    
+  }
+
+  public drawBackground(color: Color = new Color(0, 0, 0)) {
+    if (!this.surface) return
+    this.surface.clear()
+    this.surface.drawRect(new Vector2D(0, 0), new Vector2D(this.surface.width, this.surface.height), color)
+  }
+
+  public render() {
+    if (!this.surface) return
+    this.drawBackground()
+
+    this._layers.render(this.surface)
+  }
+
+  public static createViewport(dimensions: Vector2D) {
+    const surface = Surface.makeSurface(dimensions.x, dimensions.y)
+    const viewport = new ViewportSimple(dimensions, new SurfaceLayers(dimensions), surface)
+    viewport.initialize()
+    return viewport
+  }
+}
+
+export class CanvasViewport extends BaseViewport {
+  surface: Surface
+  container: HTMLElement | null = null
+  constructor(public width: number, public height: number, surface: Surface) { 
+    super(new Vector2D(width, height))
+    this.surface = surface
+  }
+
+  public init() {
+    this.surface.changeDimensions(this.width, this.height)
+  }
+
+  public attachTo(elem: string | HTMLElement) {
+    if (typeof elem === "string") {
+      const container = document.getElementById(elem) 
+      if (container !== null) this.container = container
+      
+    } else if (elem instanceof HTMLElement) {
+      this.container = elem
+    } 
+
+    if (!this.container) {
+      this.container = document.body
+    }
+    
+    this.container.appendChild(this.surface.canvas)
+    return this
+  }
+
+  public static createViewport(width: number, height: number, elem?: string | HTMLElement) {
+    const surface = Surface.makeSurface(width, height)
+    const viewport = new CanvasViewport(width, height, surface)
+    viewport.init()
+    if (elem) viewport.attachTo(elem)
+    return viewport
+  }
+
+  public render() {
+    if (!this.surface) return
+    this.drawBackground()
+  }
+
+  public drawBackground(color: Color = new Color(0, 0, 0)) {
+    if (!this.surface) return
+    this.surface.clear()
+    this.surface.drawRect(new Vector2D(0, 0), new Vector2D(this.surface.width, this.surface.height), color)
   }
 }

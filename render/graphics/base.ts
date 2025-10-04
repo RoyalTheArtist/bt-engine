@@ -2,38 +2,31 @@ import { Sprite } from "./sprite"
 import { Vector2D } from "@engine/utils"
 import { IRenderable, Surface } from "../surface"
 
-export class GraphicsObject implements IRenderable {
-    private _position: Vector2D
-    private _dimensions: Vector2D
-    private surface: Surface | null = null
-    private sprite: Sprite | null = null
+export class GraphicsObject {
+    position: Vector2D = new Vector2D(0, 0)
 
-    constructor(position: Vector2D, dimensions: Vector2D) {
-        this._position = position
-        this._dimensions = dimensions
+    constructor(x: number, y: number) {
+        this.position.x = x
+        this.position.y = y
     }
 
-    get position() { return this._position }
-    get dimensions() { return this._dimensions }
-    get center() { return new Vector2D(this.position.x + this.dimensions.x / 2, this.position.y + this.dimensions.y / 2) }
-    
-    set position(position: Vector2D) { this._position = position }
-    build() {
-        if (!this.surface) this.surface = Surface.makeSurface(this.dimensions.x, this.dimensions.y)
+    setPosition(x: number, y: number) {
+        this.position.x = x
+        this.position.y = y
     }
+
+    render(surface: Surface) { }
+}
+
+export class GraphicsContainer extends GraphicsObject {
+    objects: Set<GraphicsObject> = new Set()
+    constructor(public surface: Surface) { super(0, 0) }
+    addGraphic(graphic: GraphicsObject) { this.objects.add(graphic) }
+    removeGraphic(graphic: GraphicsObject) { this.objects.delete(graphic) }
+
     render(surface: Surface) {
-        if (!this.surface) {
-            this.build();
-            return
+        for (const object of this.objects) {
+            object.render(surface)
         }
-        this.surface.clear()
-        this.sprite?.render(this.surface)
-        surface.draw(this.surface.canvas, this.position)
     }
-
-    setSprite(sprite: Sprite) {
-        this.sprite = sprite
-    }
-
-    getSprite() { return this.sprite }
 }
