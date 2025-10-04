@@ -13,28 +13,28 @@ export const KeyboardNeutralState: KeyboardState = {
 }
 
 export class KeyboardManager {
-    static keyboardState: KeyboardState = KeyboardNeutralState
+    keyboardState: KeyboardState = KeyboardNeutralState
 
-    private static keyDown = (event: KeyboardEvent) => {
-        if (KeyboardManager.keyboardState.pressedKeys.has(event.key)) {
-            KeyboardManager.keyboardState.heldKeys.add(event.key)
+    private keyDown = (event: KeyboardEvent) => {
+        if (this.keyboardState.pressedKeys.has(event.key)) {
+            this.keyboardState.heldKeys.add(event.key)
         }
-        KeyboardManager.keyboardState.pressedKeys.add(event.key)
+        this.keyboardState.pressedKeys.add(event.key)
     }
 
-    private static keyUp = (event: KeyboardEvent) => {
-        KeyboardManager.keyboardState.pressedKeys.delete(event.key)
-        KeyboardManager.keyboardState.heldKeys.delete(event.key)
+    private keyUp = (event: KeyboardEvent) => {
+        this.keyboardState.pressedKeys.delete(event.key)
+        this.keyboardState.heldKeys.delete(event.key)
     }
 
     constructor() {
-        window.addEventListener("keydown", KeyboardManager.keyDown)
-        window.addEventListener("keyup", KeyboardManager.keyUp)
+        window.addEventListener("keydown", this.keyDown)
+        window.addEventListener("keyup", this.keyUp)
     }
 }
 
 export class KeyboardTransformer {
-    private static getActionState(actions: Map<string, ButtonState>, actionName: string): ButtonState {
+    private getActionState(actions: Map<string, ButtonState>, actionName: string): ButtonState {
         if (actions.has(actionName)) {
             return actions.get(actionName) as ButtonState
         } else {
@@ -42,7 +42,7 @@ export class KeyboardTransformer {
         }
     }
 
-    private static resolveAxisState = (negativeDirection: ButtonState, positiveDirection: ButtonState): DirectionState => {
+    private resolveAxisState = (negativeDirection: ButtonState, positiveDirection: ButtonState): DirectionState => {
         if (negativeDirection === 'pressed' && positiveDirection === 'not-pressed') {
             return -1
         } else if (positiveDirection === 'pressed' && negativeDirection === 'not-pressed') {
@@ -52,7 +52,7 @@ export class KeyboardTransformer {
         }
     }
 
-    static transform = (keyboard: KeyboardState, actionMappings: ActionMapping): StandardGameInput => {
+    transform = (keyboard: KeyboardState, actionMappings: ActionMapping): StandardGameInput => {
         const actions = new Map<string, ButtonState>()
         Object.keys(actionMappings).forEach((key) => {
             const action = actionMappings[key]
@@ -65,13 +65,13 @@ export class KeyboardTransformer {
             }
         })
 
-        const upActive = KeyboardTransformer.getActionState(actions, "move_up")
-        const downActive = KeyboardTransformer.getActionState(actions, "move_down")
-        const leftActive = KeyboardTransformer.getActionState(actions, "move_left")
-        const rightActive = KeyboardTransformer.getActionState(actions, "move_right")
+        const upActive = this.getActionState(actions, "move_up")
+        const downActive = this.getActionState(actions, "move_down")
+        const leftActive = this.getActionState(actions, "move_left")
+        const rightActive = this.getActionState(actions, "move_right")
 
-        const x = KeyboardTransformer.resolveAxisState(leftActive, rightActive)
-        const y = KeyboardTransformer.resolveAxisState(upActive, downActive)
+        const x = this.resolveAxisState(leftActive, rightActive)
+        const y = this.resolveAxisState(upActive, downActive)
 
         return {
             axis: {

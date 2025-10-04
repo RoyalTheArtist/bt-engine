@@ -1,11 +1,21 @@
-import { InputStateManager } from "./inputStateManager";
-import { KeyboardTransformer } from "./keyboard";
+import { InputStateManager, InputTransformer } from "./inputStateManager";
 import { ActionMapping, StandardGameInput } from "./types";
 
 export class InputManager {
-    static getInputs = (actionMappings: ActionMapping): StandardGameInput => {
-        const inputState = InputStateManager.getInputs();
+    manager: InputStateManager
+    transformer: InputTransformer
+    actionMappings!: ActionMapping
+    constructor() {
+        this.manager = new InputStateManager()
+        this.transformer = new InputTransformer()
+    }
+    getInputs = (): StandardGameInput => {
+        const inputState = this.manager.getInputs();
         
-        return KeyboardTransformer.transform(inputState.keyboard, actionMappings)
+        return this.transformer.transform(inputState, this.actionMappings || {})
+    }
+
+    registerMap(actionMappings: ActionMapping) {
+        this.actionMappings = actionMappings
     }
 }
